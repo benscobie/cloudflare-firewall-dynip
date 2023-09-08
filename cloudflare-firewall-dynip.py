@@ -188,9 +188,12 @@ if __name__ == '__main__':
                           str(delay) + " seconds")
                 next_time = time.time()
                 killer = GracefulExit()
-                prev_ips = None
+                prev_ips = []
                 while True:
-                    commitRecord(getIPs())
+                    ips = getIPs()
+                    if set(ips) != set(prev_ips):
+                        commitRecord(ips)
+                        prev_ips = ips
                     if killer.kill_now.wait(delay):
                         break
             else:
